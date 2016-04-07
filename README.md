@@ -10,6 +10,8 @@ This README outlines the details of collaborating on this Ember addon.
 
 ## Running
 
+* Set the environment variable ELEVIO_ACCOUNT_ID={Your account id}
+* Your account id can be found on [elev.io](https://app.elev.io/installation) in the `Installation Code` section
 * `ember server`
 * Visit your app at http://localhost:4200.
 

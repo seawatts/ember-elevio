@@ -1,9 +1,10 @@
 /* jshint node: true */
+'use strict';
 
 module.exports = function(environment) {
-  var ENV = {
+  let ENV = {
     modulePrefix: 'dummy',
-    environment: environment,
+    environment,
     baseURL: '/',
     locationType: 'auto',
     EmberENV: {
@@ -14,17 +15,20 @@ module.exports = function(environment) {
     },
 
     APP: {
-      // Here you can pass flags/options to your application instance
-      // when it is created
     }
   };
 
   if (environment === 'development') {
-    // ENV.APP.LOG_RESOLVER = true;
-    // ENV.APP.LOG_ACTIVE_GENERATION = true;
-    // ENV.APP.LOG_TRANSITIONS = true;
-    // ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
-    // ENV.APP.LOG_VIEW_LOOKUPS = true;
+
+    ENV.elevio = {
+      enabled: true,
+      accountId: process.env.ELEVIO_ACCOUNT_ID,
+      theme: 'dark',
+      side: 'right',
+      dockedPosition: 'floor',
+      tabTeaser: 'Hi ember app',
+      mainColor: 'black'
+    };
   }
 
   if (environment === 'test') {
@@ -37,10 +41,6 @@ module.exports = function(environment) {
     ENV.APP.LOG_VIEW_LOOKUPS = false;
 
     ENV.APP.rootElement = '#ember-testing';
-  }
-
-  if (environment === 'production') {
-
   }
 
   return ENV;
