@@ -1,2 +1,28 @@
-# ember-elevio
-A Ember.js library for the elev.io service.
+# Ember-elevio
+
+This README outlines the details of collaborating on this Ember addon.
+
+## Installation
+
+* `git clone` this repository
+* `npm install`
+* `bower install`
+
+## Running
+
+* Set the environment variable ELEVIO_ACCOUNT_ID={Your account id}
+* Your account id can be found on [elev.io](https://app.elev.io/installation) in the `Installation Code` section
+* `ember server`
+* Visit your app at http://localhost:4200.
+
+## Running Tests
+
+* `npm test` (Runs `ember try:testall` to test your addon against multiple Ember versions)
+* `ember test`
+* `ember test --server`
+
+## Building
+
+* `ember build`
+
+For more information on using ember-cli, visit [http://www.ember-cli.com/](http://www.ember-cli.com/).
