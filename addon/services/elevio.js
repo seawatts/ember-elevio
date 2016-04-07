@@ -38,7 +38,12 @@ export default Service.extend({
       traits
     };
 
-    elevio.changeUser(user);
+    // Only call change user if the elevio library has been loaded.
+    if (typeof elevio.changeUser === 'function') {
+      elevio.changeUser(user);
+    } else {
+      elevio.user = user;
+    }
   },
 
   /**
