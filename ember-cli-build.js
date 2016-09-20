@@ -8,7 +8,7 @@ module.exports = function(defaults) {
     dotEnv: {
       clientAllowedKeys: ['ELEVIO_ACCOUNT_ID']
     },
-    snippetSearchPaths: ['tests/dummy/app']
+    // snippetSearchPaths: ['tests/dummy/app']
   });
 
   /*

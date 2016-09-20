@@ -1,18 +1,13 @@
 // jscs:disable requireCamelCaseOrUpperCaseIdentifiers
 import Ember from 'ember';
+import elevio from 'elevio';
 
 const {
-  computed,
-  get,
   isArray,
   Service
 } = Ember;
 
 export default Service.extend({
-  _elevio: computed(function() {
-    return window._elev || {};
-  }),
-
   /**
    * Sets the user information and traits on the elevio library.
    * See: https://elev.io/api#user-info
@@ -27,7 +22,6 @@ export default Service.extend({
    *
    */
   identify(userInfo = {}, traits = {}) {
-    let elevio = get(this, '_elevio');
     let user = {
       first_name: userInfo.firstName,
       last_name: userInfo.lastName,
@@ -54,7 +48,7 @@ export default Service.extend({
    * @method logout
    */
   logout() {
-    get(this, '_elevio').logoutUser();
+    elevio.logoutUser();
   },
 
   /**
@@ -65,7 +59,7 @@ export default Service.extend({
    * @method setLanguage
    */
   setLanguage(language) {
-    get(this, '_elevio').lang = language;
+    elevio.lang = language;
   },
 
   /**
@@ -77,8 +71,6 @@ export default Service.extend({
    * @param {String} module, a single module name to disable.
    */
   disableModule(module) {
-    let elevio = get(this, '_elevio');
-
     if (!isArray(elevio.disabledModules)) {
       elevio.disabledModules = [module];
     }
@@ -95,7 +87,7 @@ export default Service.extend({
    * @param {String} articleId
    */
   openArticle(articleId) {
-    get(this, '_elevio').openArticle(articleId);
+    elevio.openArticle(articleId);
   },
 
   /**
@@ -107,7 +99,7 @@ export default Service.extend({
    * @param {String} moduleName
    */
   openModule(moduleName) {
-    get(this, '_elevio').openArticle(moduleName);
+    elevio.openArticle(moduleName);
   },
 
   /**
@@ -118,7 +110,7 @@ export default Service.extend({
    * @method enableMargin
    */
   enableMargin() {
-    get(this, '_elevio').pushin = 'true';
+    elevio.pushin = 'true';
   },
 
   /**
@@ -129,6 +121,6 @@ export default Service.extend({
    * @method disableMargin
    */
   disableMargin() {
-    get(this, '_elevio').pushin = 'false';
+    elevio.pushin = 'false';
   }
 });

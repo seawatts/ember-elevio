@@ -1,9 +1,9 @@
 /* jshint node: true */
 
 module.exports = function(environment) {
-  var ENV = {
+  let ENV = {
     modulePrefix: 'dummy',
-    environment: environment,
+    environment,
     rootURL: '/',
     locationType: 'auto',
     EmberENV: {
@@ -20,6 +20,9 @@ module.exports = function(environment) {
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
+    },
+    elevio: {
+      accountId: process.env.ELEVIO_ACCOUNT_ID
     }
   };
 
