@@ -1,5 +1,9 @@
-// jscs:disable requireCamelCaseOrUpperCaseIdentifiers
+// jscs:disable
 /* globals define */
+function toSnakeCase(string) {
+  return string;
+}
+
 (function() {
   'use strict';
   var _elev = window._elev = {};
@@ -14,12 +18,11 @@
       throw new Error('ENV.elevio.accountId must be defined in config/environment.js');
     }
 
-    _elev.account_id = config.accountId;
-    _elev.theme = config.theme || ''; // or 'light'
-    _elev.side = config.side || ''; // or 'left'
-    _elev.docked_position = config.dockedPosition || '';  // or 'floor' or 'button'
-    _elev.tab_teaser = config.tabTeaser || '';
-    _elev.mainColor = config.mainColor || ''; // or 'black', or 'rgb(0, 0, 0)'
+    for (var key in config) {
+      if (config.hasOwnProperty(key)) {
+        _elev[toSnakeCase(key)] = config[key];
+      }
+    }
   }
 
   function generateModule(name, values) {
