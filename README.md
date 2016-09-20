@@ -1,4 +1,8 @@
-# Ember-elevio
+# ember-elevio
+
+[![Build Status](https://travis-ci.org/seawatts/ember-elevio.svg?branch=master)](https://travis-ci.org/seawatts/ember-elevio)
+[![Ember Observer Score](https://emberobserver.com/badges/ember-elevio.svg)](https://emberobserver.com/addons/ember-elevio)
+[![npm version](https://badge.fury.io/js/ember-elevio.svg)](https://badge.fury.io/js/ember-elevio)
 
 This README outlines the details of collaborating on this Ember addon.
 
