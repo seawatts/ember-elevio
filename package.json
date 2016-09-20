@@ -11,11 +11,11 @@
     "start": "ember server",
     "test": "ember try:testall"
   },
-  "repository": "",
+  "repository": "https://github.com/seawatts/ember-elevio",
   "engines": {
-    "node": ">= 0.10.0"
+    "node": ">= 6.0.0"
   },
-  "author": "",
+  "author": "seawatts",
   "license": "MIT",
   "devDependencies": {
     "broccoli-asset-rev": "^2.2.0",
