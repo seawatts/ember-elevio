@@ -1,9 +1,9 @@
 /* jshint node: true */
 
 module.exports = function(environment) {
-  let ENV = {
+  var ENV = {
     modulePrefix: 'dummy',
-    environment,
+    environment: environment,
     rootURL: '/',
     locationType: 'auto',
     APP: {

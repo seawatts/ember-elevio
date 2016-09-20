@@ -2,7 +2,7 @@
 /* globals define */
 (function() {
   'use strict';
-  let _elev = window._elev = {};
+  var _elev = window._elev = {};
 
   function _setup(config) {
     var i, e;
@@ -36,6 +36,6 @@
 
   generateModule('elevio', {
     default: _elev,
-    _setup
+    _setup: _setup
   });
 })();
