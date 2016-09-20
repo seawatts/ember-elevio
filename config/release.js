@@ -1,21 +1,28 @@
-/* jshint node:true */
-// var RSVP = require('rsvp');
+/* jshint node: true */
+'use strict';
+const generateChangelog = require('ember-cli-changelog/lib/tasks/release-with-changelog');
+const { execSync } = require('child_process');
 
-// For details on each option run `ember help release`
 module.exports = {
-  // local: true,
-  // remote: 'some_remote',
-  // annotation: 'Release %@',
   message: ':tada: %@',
-  // manifest: [ 'package.json', 'bower.json', 'someconfig.json' ],
   publish: true,
-  // strategy: 'date',
-  // format: 'YYYY-MM-DD',
-  // timezone: 'America/Los_Angeles',
-  //
-  // beforeCommit: function(project, versions) {
-  //   return new RSVP.Promise(function(resolve, reject) {
-  //     // Do custom things here...
-  //   });
-  // }
+  init(project, tags) {
+    execSync(`git hf release start ${tags.next}`, (err) => {
+      if (err) {
+        throw new Error('Could not complete starting a hubflow release');
+      }
+    });
+  },
+
+  afterPush(project, tags) {
+    execSync(`git hf release finish ${tags.next}`, (err) => {
+      if (err) {
+        throw new Error('Could not complete finishing a hubflow release');
+      }
+    });
+  },
+
+  beforeCommit() {
+    generateChangelog(...arguments);
+  }
 };
