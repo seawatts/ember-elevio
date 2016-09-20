@@ -1,8 +1,10 @@
 // jscs:disable
 /* globals define */
-function toSnakeCase(string) {
-  return string;
-}
+String.prototype.toSnakeCase = function() {
+  return this.replace(/([A-Z])/g, function(string) {
+    return '_' + string.toLowerCase();
+  });
+};
 
 (function() {
   'use strict';
@@ -18,9 +20,11 @@ function toSnakeCase(string) {
       throw new Error('ENV.elevio.accountId must be defined in config/environment.js');
     }
 
+    // elevio uses snake case for all their keys.
+    // All the config for this addon uses camelCase
     for (var key in config) {
       if (config.hasOwnProperty(key)) {
-        _elev[toSnakeCase(key)] = config[key];
+        _elev[key.toSnakeCase()] = config[key];
       }
     }
   }
