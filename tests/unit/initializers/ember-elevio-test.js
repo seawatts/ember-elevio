@@ -8,11 +8,17 @@ const {
 } = Ember;
 
 let application;
+let mockConfig = {
+  elevio: {
+    accountId: '1'
+  }
+};
 
 module('Unit | Initializer | ember elevio', {
   beforeEach() {
     run(function() {
       application = Application.create();
+      application.register('config:environment', mockConfig, { instantiate: false });
       application.deferReadiness();
     });
   }
