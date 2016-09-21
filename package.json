@@ -3,7 +3,6 @@
   "version": "0.2.2",
   "description": "Idiomatic, deep elevio integration for ember.js apps",
   "directories": {
-    "doc": "doc",
     "test": "tests"
   },
   "scripts": {
@@ -40,7 +39,30 @@
     "loader.js": "^4.0.10"
   },
   "keywords": [
-    "ember-addon"
+    "ember-addon",
+    "elevio",
+    "elev.io",
+    "intercom",
+    "freshdesk",
+    "mixpanel",
+    "olark",
+    "salesforce desk",
+    "disqus",
+    "google analytics",
+    "groove",
+    "help scout",
+    "kiss metrics",
+    "live chat",
+    "segment.io",
+    "shopify",
+    "smooch",
+    "statuspage.io",
+    "uservoice",
+    "wordpress",
+    "zendesk",
+    "zopim",
+    "rss",
+    "support"
   ],
   "dependencies": {
     "ember-cli-babel": "^5.1.7",

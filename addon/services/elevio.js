@@ -42,8 +42,8 @@ export default Service.extend({
     }
 
     let user = {};
-    for (let [key, value] of userInfo) {
-      user[key.toSnakeCase()] = value;
+    for (let key of Object.keys(userInfo)) {
+      user[key.toSnakeCase()] = userInfo[key];
     }
 
     // Only call change user if the elevio library has been loaded.

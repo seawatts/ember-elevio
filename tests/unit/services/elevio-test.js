@@ -18,7 +18,7 @@ test('it calls changeUser with the correct userInfo', function(assert) {
     _elevio: {
       changeUser(userInfo) {
         assert.deepEqual(userInfo, {
-          id: 1,
+          id: '1',
           first_name: 'bob',
           car: 'foo',
           traits: {
