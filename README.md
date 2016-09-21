@@ -54,6 +54,9 @@ module.exports = function(environment) {
 ```
 
 ## Using the service
+> Note: if you are setting the user email you must also set the userHash. See: https://elev.io/api#user-hash
+
+
 ```js
 import Ember from 'ember';
 
@@ -73,7 +76,7 @@ export default Component.extend({
         lastName: 'Doe',
         email: 'john@example.com',
         phoneNumber: '555-555-555', // used by some of the live chat clients
-        userHash: '98aad46fd8124d2f8096fdfd2f56951850623403f683a6d85f795f96d3439b7d',
+        userHash: '98aad46fd8', // See: https://elev.io/api#user-hash
         groups: 'gold',
         traits: {
           Plan: 'Gold',
@@ -100,7 +103,6 @@ export default Component.extend({
 * openModule(moduleIdOrName)
 * enablePushin()
 * disablePushin()
-* on(eventName, callback)
  
 ## Using the mixin
 
