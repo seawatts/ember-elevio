@@ -11,7 +11,7 @@ String.prototype.toSnakeCase = function() {
   var _elev = window._elev = {};
 
   function _setup(config) {
-    if (!config.enabled) {
+    if (config.enabled === false) {
       return;
     }
 
