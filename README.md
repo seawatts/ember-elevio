@@ -26,6 +26,7 @@ The elevio widget should appear once the app has initialized.
 module.exports = function(environment) {
   var ENV = {
     elevio: {
+      enabled: true, // or false
       accountId: '1234',
       theme: 'dark', // or 'light'
       side: 'left', // or 'right'
