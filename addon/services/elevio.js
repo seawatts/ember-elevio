@@ -4,12 +4,21 @@ import elevio from 'elevio';
 
 const {
   typeOf,
+  isPresent,
+  isEmpty,
   merge,
   Service,
   deprecate,
   computed,
-  get
+  get,
+  Logger
 } = Ember;
+
+String.prototype.toSnakeCase = function() {
+  return this.replace(/([A-Z])/g, function(string) {
+    return `_${string.toLowerCase()}`;
+  });
+};
 
 export default Service.extend({
   _elevio: computed(function() {
@@ -26,15 +35,16 @@ export default Service.extend({
    * @param {Object} userInfo
    */
   changeUser(userInfo = {}) {
-    let user = {
-      first_name: userInfo.firstName,
-      last_name: userInfo.lastName,
-      email: userInfo.email,
-      phone_number: userInfo.phoneNumber, // used by some of the live chat clients
-      user_hash: userInfo.userHash || userInfo.id,
-      groups: userInfo.groups,
-      traits: userInfo.traits
-    };
+    if (isPresent(userInfo.email) && isEmpty(userInfo.userHash)) {
+      Logger.error(
+        'When passing in an email to elevio you must also pass in the userHash. ' +
+        'See: https://elev.io/api#user-hash');
+    }
+
+    let user = {};
+    for (let key of Object.keys(userInfo)) {
+      user[key.toSnakeCase()] = userInfo[key];
+    }
 
     // Only call change user if the elevio library has been loaded.
     if (typeOf(get(this, '_elevio').changeUser) === 'function') {

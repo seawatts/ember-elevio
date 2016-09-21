@@ -1,3 +1,4 @@
+// jscs:disable requireCamelCaseOrUpperCaseIdentifiers
 import Ember from 'ember';
 import {
   moduleFor,
@@ -16,13 +17,25 @@ test('it calls changeUser with the correct userInfo', function(assert) {
   let service = this.subject({
     _elevio: {
       changeUser(userInfo) {
-        assert.ok(userInfo);
+        assert.deepEqual(userInfo, {
+          id: '1',
+          first_name: 'bob',
+          car: 'foo',
+          traits: {
+            myTrait: 'bar'
+          }
+        });
       }
     }
   });
 
   service.changeUser({
-    id: '1'
+    id: '1',
+    firstName: 'bob',
+    car: 'foo',
+    traits: {
+      myTrait: 'bar'
+    }
   });
 });
 
