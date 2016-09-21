@@ -11,6 +11,10 @@ String.prototype.toSnakeCase = function() {
   var _elev = window._elev = {};
 
   function _setup(config) {
+    if (!config.enabled) {
+      return;
+    }
+
     var i, e;
     i = document.createElement("script"), i.type = 'text/javascript';
     i.async = 1, i.src = "https://static.elev.io/js/v3.js", e =
