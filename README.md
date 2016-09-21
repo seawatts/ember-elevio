@@ -8,8 +8,7 @@
 
 This README outlines the details of collaborating on this Ember addon.
 
-
-## Setup
+## Installation 
 
 **Install this addon with ember-cli** `ember install ember-elevio`
 
@@ -175,7 +174,7 @@ export default Route.extend(ElevioEvents, {
 
 # Contributing 
 
-## Installation
+## Cloning 
 
 * `git clone <repository-url>` this repository
 * `cd ember-elevio`
