@@ -1,6 +1,6 @@
 {
   "name": "ember-elevio",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Idiomatic, deep elevio integration for ember.js apps",
   "directories": {
     "test": "tests"
