@@ -5,20 +5,20 @@ moduleForComponent('elevio-inline', 'Integration | Component | elevio inline', {
   integration: true
 });
 
-test('it renders', function(assert) {
-  // Set any properties with this.set('myProperty', 'value');
-  // Handle any actions with this.on('myAction', function(val) { ... });"
+test('it renders an inline element with the correct data attributes set', function(assert) {
+  assert.expect(2);
+  this.render(hbs`{{elevio-inline inline="1" text="foo"}}`);
 
-  this.render(hbs`{{elevio-inline}}`);
+  assert.ok(this.$('span[data-elevio-inline=1]'));
+  assert.equal(this.$('span[data-elevio-inline=1]').text().trim(), 'foo');
+});
 
-  assert.equal(this.$().text().trim(), '');
-
-  // Template block usage:"
+test('it renders an block element with the correct data attributes set', function(assert) {
   this.render(hbs`
-    {{#elevio-inline}}
-      template block text
+    {{#elevio-inline inline="1"}}
+      foo
     {{/elevio-inline}}
   `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
+  assert.ok(this.$('span[data-elevio-inline=1]'));
+  assert.equal(this.$('span[data-elevio-inline=1]').text().trim(), 'foo');
 });

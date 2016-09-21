@@ -24,10 +24,9 @@ module('Unit | Initializer | ember elevio', {
   }
 });
 
-// Replace this with your real tests.
-test('it works', function(assert) {
+test('it sets the _elev object on the window with the correct config.', function(assert) {
   EmberElevioInitializer.initialize(application);
 
   // you would normally confirm the results of the initializer here
-  assert.ok(true);
+  assert.ok(window._elev);
 });

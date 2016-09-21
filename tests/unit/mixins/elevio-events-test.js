@@ -6,18 +6,24 @@ import {
 } from 'qunit';
 
 const {
-  Object: EmberObject
+  Object: EmberObject,
+  get
 } = Ember;
 
 module('Unit | Mixin | elevio events');
 
-// Replace this with your real tests.
-test('it works', function(assert) {
+test('it sends the afterElevioLoaded action', function(assert) {
+  assert.expect(1);
+
   let ElevioEventsObject = EmberObject.extend(ElevioEventsMixin, {
-    _on() {
+    elevio: {
+      events: {}
+    },
+    afterElevioLoaded() {
+      assert.ok(true);
     }
   });
 
   let subject = ElevioEventsObject.create();
-  assert.ok(subject);
+  get(subject, 'elevio.events').afterLoad();
 });

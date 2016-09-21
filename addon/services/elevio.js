@@ -4,12 +4,17 @@ import elevio from 'elevio';
 
 const {
   typeOf,
-  assign,
+  merge,
   Service,
-  deprecate
+  deprecate,
+  computed,
+  get
 } = Ember;
 
 export default Service.extend({
+  _elevio: computed(function() {
+    return elevio || {};
+  }),
   /**
    * Sets the user information and traits on the elevio library.
    * See: https://elev.io/api#user-info
@@ -32,10 +37,10 @@ export default Service.extend({
     };
 
     // Only call change user if the elevio library has been loaded.
-    if (typeOf(elevio.changeUser) === 'function') {
-      elevio.changeUser(user);
+    if (typeOf(get(this, '_elevio').changeUser) === 'function') {
+      get(this, '_elevio').changeUser(user);
     } else {
-      elevio.user = user;
+      get(this, '_elevio').user = user;
     }
   },
 
@@ -71,9 +76,7 @@ export default Service.extend({
    */
   logoutUser() {
     // Only call change user if the elevio library has been loaded.
-    if (typeOf(elevio.logoutUser) === 'function') {
-      elevio.logoutUser();
-    }
+    this._callIfElevioIsLoaded('logoutUser');
   },
 
   /**
@@ -101,7 +104,7 @@ export default Service.extend({
    * @param {Object} translations.
    */
   setTranslations(translations = {}) {
-    elevio.translations = assign(elevio.translations || {}, translations);
+    get(this, '_elevio').translations = merge(get(this, '_elevio').translations || {}, translations);
   },
 
   /**
@@ -114,7 +117,7 @@ export default Service.extend({
    */
   setKeywords(keywords = []) {
     keywords = Array.isArray(keywords) ? keywords : [keywords];
-    elevio.keywords = keywords;
+    get(this, '_elevio').keywords = keywords;
   },
 
   /**
@@ -125,7 +128,7 @@ export default Service.extend({
    * @method setLanguage
    */
   setLanguage(language = 'en') {
-    elevio.lang = language;
+    get(this, '_elevio').lang = language;
   },
 
   /**
@@ -138,7 +141,7 @@ export default Service.extend({
    */
   disableModules(modules = []) {
     modules = Array.isArray(modules) ? modules : [modules];
-    elevio.disableModules(modules);
+    this._callIfElevioIsLoaded('disableModules', modules);
   },
 
   /**
@@ -168,7 +171,7 @@ export default Service.extend({
    */
   enableModules(modules = []) {
     modules = Array.isArray(modules) ? modules : [modules];
-    elevio.enableModules(modules);
+    this._callIfElevioIsLoaded('enableModules', modules);
   },
 
   /**
@@ -180,7 +183,7 @@ export default Service.extend({
    * @param {String} articleId
    */
   openArticle(articleId = '') {
-    elevio.openArticle(articleId);
+    this._callIfElevioIsLoaded('openArticle', articleId);
   },
 
   /**
@@ -192,7 +195,7 @@ export default Service.extend({
    * @param {String} moduleName
    */
   openModule(moduleName = '') {
-    elevio.openModule(moduleName);
+    this._callIfElevioIsLoaded('openModule', moduleName);
   },
 
   /**
@@ -203,7 +206,7 @@ export default Service.extend({
    * @method enablePushin
    */
   enablePushin() {
-    elevio.pushin = 'true';
+    get(this, '_elevio').pushin = 'true';
   },
 
   /**
@@ -230,7 +233,7 @@ export default Service.extend({
    * @method disablePushin
    */
   disablePushin() {
-    elevio.pushin = 'false';
+    get(this, '_elevio').pushin = 'false';
   },
 
   /**
@@ -247,5 +250,11 @@ export default Service.extend({
     });
 
     this.disablePushin();
+  },
+  _callIfElevioIsLoaded(func, args) {
+    // Only call if the elevio library has been loaded.
+    if (typeOf(get(this, '_elevio')[func]) === 'function') {
+      get(this, '_elevio')[func](args);
+    }
   }
 });
