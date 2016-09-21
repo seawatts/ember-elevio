@@ -1,46 +1,10 @@
-// jscs:disable requireCamelCaseOrUpperCaseIdentifiers
 /* jshint node: true */
 'use strict';
 
-function getElevioCodeSnippit(config) {
-  if (!config.accountId) {
-    throw new Error('elevio.accountId must be set in your config/environment.js file if elevio is enabled', config.accountId);
-  }
-
-  return `
-  <script>
-  var _elev = window._elev || {};
-  (function() {
-    var i, e;
-    i = document.createElement("script"), i.type = 'text/javascript';
-    i.async = 1, i.src = "https://static.elev.io/js/v3.js", e =
-      document.getElementsByTagName("script")[0], e.parentNode.insertBefore(i, e);
-  })();
-  _elev.account_id = '${config.accountId}';
-  _elev.theme = '${config.theme || ''}'; // or 'light'
-  _elev.side = '${config.side || ''}'; // or 'left'
-  _elev.docked_position = '${config.dockedPosition || ''}'; // or 'floor' or 'button'
-  _elev.tab_teaser = '${config.tabTeaser || ''}';
-  _elev.main_color = '${config.mainColor || ''}'; // or 'black', or 'rgb(0, 0, 0)'
-  </script>
-  `;
-}
-
 module.exports = {
   name: 'ember-elevio',
-  isDevelopingAddon() {
-    return true;
-  },
-  contentFor(type, config) {
-    if (type === 'body-footer') {
-      let elevioConfig = config.elevio;
-      if (!elevioConfig) {
-        return;
-      }
-
-      if (elevioConfig.enabled) {
-        return getElevioCodeSnippit(elevioConfig);
-      }
-    }
+  included(app) {
+    this._super.included(app);
+    app.import('vendor/elevio-shim.js');
   }
 };

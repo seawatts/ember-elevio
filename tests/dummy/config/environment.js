@@ -1,39 +1,20 @@
 /* jshint node: true */
-'use strict';
 
 module.exports = function(environment) {
-  let ENV = {
+  var ENV = {
     modulePrefix: 'dummy',
-    environment,
-    baseURL: '/',
+    environment: environment,
+    rootURL: '/',
     locationType: 'auto',
-    EmberENV: {
-      FEATURES: {
-        // Here you can enable experimental features on an ember canary build
-        // e.g. 'with-controller': true
-      }
-    },
-
     APP: {
+    },
+    elevio: {
+      accountId: process.env.ELEVIO_ACCOUNT_ID
     }
   };
 
-  if (environment === 'development') {
-
-    ENV.elevio = {
-      enabled: true,
-      accountId: process.env.ELEVIO_ACCOUNT_ID,
-      theme: 'dark',
-      side: 'right',
-      dockedPosition: 'floor',
-      tabTeaser: 'Hi ember app',
-      mainColor: 'black'
-    };
-  }
-
   if (environment === 'test') {
     // Testem prefers this...
-    ENV.baseURL = '/';
     ENV.locationType = 'none';
 
     // keep test console output quieter

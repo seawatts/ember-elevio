@@ -1,17 +1,48 @@
 // jscs:disable requireCamelCaseOrUpperCaseIdentifiers
 import Ember from 'ember';
+import elevio from 'elevio';
 
 const {
+  typeOf,
+  merge,
+  Service,
+  deprecate,
   computed,
-  get,
-  isArray,
-  Service
+  get
 } = Ember;
 
 export default Service.extend({
   _elevio: computed(function() {
-    return window._elev || {};
+    return elevio || {};
   }),
+  /**
+   * Sets the user information and traits on the elevio library.
+   * See: https://elev.io/api#user-info
+   *
+   * See: https://elev.io/api#change-user
+   *
+   * @public
+   * @method changeUser
+   * @param {Object} userInfo
+   */
+  changeUser(userInfo = {}) {
+    let user = {
+      first_name: userInfo.firstName,
+      last_name: userInfo.lastName,
+      email: userInfo.email,
+      phone_number: userInfo.phoneNumber, // used by some of the live chat clients
+      user_hash: userInfo.userHash || userInfo.id,
+      groups: userInfo.groups,
+      traits: userInfo.traits
+    };
+
+    // Only call change user if the elevio library has been loaded.
+    if (typeOf(get(this, '_elevio').changeUser) === 'function') {
+      get(this, '_elevio').changeUser(user);
+    } else {
+      get(this, '_elevio').user = user;
+    }
+  },
 
   /**
    * Sets the user information and traits on the elevio library.
@@ -27,34 +58,66 @@ export default Service.extend({
    *
    */
   identify(userInfo = {}, traits = {}) {
-    let elevio = get(this, '_elevio');
-    let user = {
-      first_name: userInfo.firstName,
-      last_name: userInfo.lastName,
-      email: userInfo.email,
-      phone_number: userInfo.phoneNumber, // used by some of the live chat clients
-      user_hash: userInfo.id,
-      groups: userInfo.groups,
-      traits
-    };
+    deprecate('The elevio.identify function is being deprecated please use elevio.changeUser instead', false, {
+      id: 'ember-elevio.identify',
+      until: '1.0.0'
+    });
 
-    // Only call change user if the elevio library has been loaded.
-    if (typeof elevio.changeUser === 'function') {
-      elevio.changeUser(user);
-    } else {
-      elevio.user = user;
-    }
+    userInfo.traits = traits;
+    this.changeUser(userInfo);
   },
 
   /**
-   * Calls logout on the elevio library.
+   * Calls logoutUser on the elevio library.
+   * See: https://elev.io/api#change-user
+   *
+   * @public
+   * @method logoutUser
+   */
+  logoutUser() {
+    // Only call change user if the elevio library has been loaded.
+    this._callIfElevioIsLoaded('logoutUser');
+  },
+
+  /**
+   * Calls logoutUser on the elevio library.
    * See: https://elev.io/api#change-user
    *
    * @public
    * @method logout
    */
   logout() {
-    get(this, '_elevio').logoutUser();
+    deprecate('The elevio.logout function is being deprecated please use elevio.logoutUser instead', false, {
+      id: 'ember-elevio.logout',
+      until: '1.0.0'
+    });
+
+    this.logoutUser();
+  },
+
+  /**
+   * Overrides translations on the elevio library.
+   * See: https://elev.io/api#keywords
+   *
+   * @public
+   * @method setTranslations
+   * @param {Object} translations.
+   */
+  setTranslations(translations = {}) {
+    get(this, '_elevio').translations = merge(get(this, '_elevio').translations || {}, translations);
+  },
+
+  /**
+   * Overrides keywords for a given page on the elevio library.
+   * See: https://elev.io/api#keywords
+   *
+   * @public
+   * @method setKeywords
+   * @param {String} keywords, a one or more keywords to set.
+   */
+  setKeywords(keywords = []) {
+    keywords = Array.isArray(keywords) ? keywords : [keywords];
+    get(this, '_elevio').keywords = keywords;
   },
 
   /**
@@ -64,7 +127,7 @@ export default Service.extend({
    * @public
    * @method setLanguage
    */
-  setLanguage(language) {
+  setLanguage(language = 'en') {
     get(this, '_elevio').lang = language;
   },
 
@@ -73,17 +136,42 @@ export default Service.extend({
    * See: https://elev.io/api#disable-module
    *
    * @public
+   * @method disableModules
+   * @param {String} modules, a one or more module names to disable.
+   */
+  disableModules(modules = []) {
+    modules = Array.isArray(modules) ? modules : [modules];
+    this._callIfElevioIsLoaded('disableModules', modules);
+  },
+
+  /**
+   * Calls disable module on the elevio library.
+   * See: https://elev.io/api#disable-module
+   *
+   * @public
    * @method disableModule
-   * @param {String} module, a single module name to disable.
+   * @param {String} module, a one or more module names to disable.
    */
   disableModule(module) {
-    let elevio = get(this, '_elevio');
+    deprecate('The elevio.disableModule function is being deprecated please use elevio.disableModules instead', false, {
+      id: 'ember-elevio.disableModule',
+      until: '1.0.0'
+    });
 
-    if (!isArray(elevio.disabledModules)) {
-      elevio.disabledModules = [module];
-    }
+    this.disableModules(module);
+  },
 
-    elevio.disabledModules.push(module);
+  /**
+   * Calls enable module on the elevio library.
+   * See: https://elev.io/api#enable-module
+   *
+   * @public
+   * @method enableModules
+   * @param {String} modules, a one or more module names to enable.
+   */
+  enableModules(modules = []) {
+    modules = Array.isArray(modules) ? modules : [modules];
+    this._callIfElevioIsLoaded('enableModules', modules);
   },
 
   /**
@@ -94,20 +182,31 @@ export default Service.extend({
    * @method openArticle
    * @param {String} articleId
    */
-  openArticle(articleId) {
-    get(this, '_elevio').openArticle(articleId);
+  openArticle(articleId = '') {
+    this._callIfElevioIsLoaded('openArticle', articleId);
   },
 
   /**
-   * Opens an module by its name.
+   * Opens an module by its name or id.
    * See: https://elev.io/api#open-module
    *
    * @public
    * @method openModule
    * @param {String} moduleName
    */
-  openModule(moduleName) {
-    get(this, '_elevio').openArticle(moduleName);
+  openModule(moduleName = '') {
+    this._callIfElevioIsLoaded('openModule', moduleName);
+  },
+
+  /**
+   * Sets push in to true on the elevio library.
+   * See: https://elev.io/api#pushin
+   *
+   * @public
+   * @method enablePushin
+   */
+  enablePushin() {
+    get(this, '_elevio').pushin = 'true';
   },
 
   /**
@@ -118,7 +217,23 @@ export default Service.extend({
    * @method enableMargin
    */
   enableMargin() {
-    get(this, '_elevio').pushin = 'true';
+    deprecate('The elevio.enableMargin function is being deprecated please use elevio.enablePushin instead', false, {
+      id: 'ember-elevio.enableMargin',
+      until: '1.0.0'
+    });
+
+    this.enablePushin();
+  },
+
+  /**
+   * Sets push in to false on the elevio library.
+   * See: https://elev.io/api#pushin
+   *
+   * @public
+   * @method disablePushin
+   */
+  disablePushin() {
+    get(this, '_elevio').pushin = 'false';
   },
 
   /**
@@ -129,6 +244,17 @@ export default Service.extend({
    * @method disableMargin
    */
   disableMargin() {
-    get(this, '_elevio').pushin = 'false';
+    deprecate('The elevio.disableMargin function is being deprecated please use elevio.disablePushin instead', false, {
+      id: 'ember-elevio.disableMargin',
+      until: '1.0.0'
+    });
+
+    this.disablePushin();
+  },
+  _callIfElevioIsLoaded(func, args) {
+    // Only call if the elevio library has been loaded.
+    if (typeOf(get(this, '_elevio')[func]) === 'function') {
+      get(this, '_elevio')[func](args);
+    }
   }
 });
